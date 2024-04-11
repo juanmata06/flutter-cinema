@@ -1,4 +1,4 @@
-import "package:flutter_cinema/screens/movies/home_screen.dart";
+import "package:flutter_cinema/presentation/screens/movies/home_screen.dart";
 import "package:go_router/go_router.dart";
 
 final appRouter = GoRouter(

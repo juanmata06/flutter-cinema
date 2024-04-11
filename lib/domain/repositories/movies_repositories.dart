@@ -1,5 +1,5 @@
 import 'package:flutter_cinema/domain/entities/movie.dart';
 
-abstract class MoviesRepositoies{
+abstract class MoviesRepository{
   Future<List<Movie>> getNowPlaying({int page = 1});
 }
