@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_cinema/presentation/providers/movies/movies_providers.dart";
 import "package:flutter_cinema/presentation/widgets/shared/custom_app_bar.dart";
+import "package:flutter_cinema/presentation/widgets/widgets.exports.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 class HomeScreen extends StatelessWidget {
@@ -38,16 +39,17 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     return Column(
       children: [
         const CustomAppBar(),
-        Expanded(
-          child: ListView.builder(
-              itemCount: nowPlayingMovies.length,
-              itemBuilder: ((context, index) {
-                final movie = nowPlayingMovies[index];
-                return ListTile(
-                  title: Text(movie.title),
-                );
-              })),
-        )
+        MoviesSlideShow(movies: nowPlayingMovies)
+        // Expanded(
+        //   child: ListView.builder(
+        //       itemCount: nowPlayingMovies.length,
+        //       itemBuilder: ((context, index) {
+        //         final movie = nowPlayingMovies[index];
+        //         return ListTile(
+        //           title: Text(movie.title),
+        //         );
+        //       })),
+        // )
       ],
     );
   }
