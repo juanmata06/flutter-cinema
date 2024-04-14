@@ -1,7 +1,5 @@
 import "package:flutter/material.dart";
-import "package:flutter_cinema/presentation/providers/movies/movies_providers.dart";
 import "package:flutter_cinema/presentation/providers/providers_exports.dart";
-import "package:flutter_cinema/presentation/widgets/shared/custom_app_bar.dart";
 import "package:flutter_cinema/presentation/widgets/widgets.exports.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
@@ -13,19 +11,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: _HomeView(),
+      body: _BodyView(),
+      bottomNavigationBar: CustomBottomBar(),
     );
   }
 }
 
-class _HomeView extends ConsumerStatefulWidget {
-  const _HomeView();
+class _BodyView extends ConsumerStatefulWidget {
+  const _BodyView();
 
   @override
-  _HomeViewState createState() => _HomeViewState();
+  _BodyViewState createState() => _BodyViewState();
 }
 
-class _HomeViewState extends ConsumerState<_HomeView> {
+class _BodyViewState extends ConsumerState<_BodyView> {
   @override
   void initState() {
     super.initState();
