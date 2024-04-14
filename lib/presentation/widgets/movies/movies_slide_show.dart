@@ -4,12 +4,15 @@ import "package:card_swiper/card_swiper.dart";
 import "package:flutter/material.dart";
 
 class MoviesSlideShow extends StatelessWidget { // Clase para mostrar un carousel de peliculas
+  
   final List<Movie> movies;
 
   const MoviesSlideShow({super.key, required this.movies});
 
   @override
   Widget build(BuildContext context) {
+      final colors = Theme.of(context).colorScheme;
+
     return SizedBox( // Widget del carousel con sus atributos
       height: 210,
       width: double.infinity,
@@ -19,7 +22,15 @@ class MoviesSlideShow extends StatelessWidget { // Clase para mostrar un carouse
           autoplay: true,
           itemCount: movies.length,
           // Cadapos del slide mostrara otra clase privada que crearemos llamada _Slide:
-          itemBuilder: (context, index) => _Slide(movie: movies[index])),
+          itemBuilder: (context, index) => _Slide(movie: movies[index]),
+          pagination: SwiperPagination(
+            margin: const EdgeInsets.only(top: 0),
+            builder: DotSwiperPaginationBuilder(
+              activeColor: colors.primary,
+              color: colors.secondary
+            )
+          ),
+      ),
     );
   }
 }
