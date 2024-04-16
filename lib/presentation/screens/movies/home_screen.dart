@@ -28,19 +28,23 @@ class _BodyViewState extends ConsumerState<_BodyView> {
   @override
   void initState() {
     super.initState();
-
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-    final nowPlayingMovies = ref.watch(moviesSlideShowProvider);
+    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final slideShowMovies = ref.watch(moviesSlideShowProvider);
 
     return Column(
       children: [
         const CustomAppBar(),
-        MoviesSlideShow(movies: nowPlayingMovies)
+        MoviesSlideShow(movies: slideShowMovies),
+        MoviesHorizontalListview(
+          movies: nowPlayingMovies,
+          labelTitle: 'En cines',
+          labelSubtitle: 'Lunes 15',
+        )
       ],
     );
   }

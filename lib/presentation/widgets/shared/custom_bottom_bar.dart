@@ -10,7 +10,7 @@ class CustomBottomBar extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_max),
-          label: 'hola'
+          label: 'Películas'
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.label_outline),
