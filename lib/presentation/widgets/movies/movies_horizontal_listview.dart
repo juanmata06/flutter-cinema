@@ -1,5 +1,6 @@
 import "package:animate_do/animate_do.dart";
 import "package:flutter/material.dart";
+import "package:flutter_cinema/config/helpers/human_formats.dart";
 import "package:flutter_cinema/domain/entities/movie.dart";
 
 class MoviesHorizontalListview extends StatelessWidget {
@@ -64,7 +65,6 @@ class _Label extends StatelessWidget {
             ),
           const Spacer(),
           if (subtitle != null)
-            // Text(subtitle!, style: subTitleStyle)
             FilledButton.tonal(
                 style: const ButtonStyle(visualDensity: VisualDensity.compact),
                 onPressed: () {},
@@ -85,12 +85,18 @@ class _Slide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final textStyles = Theme.of(context).textTheme;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        //* Card container
         SizedBox(
           width: 150,
-          child: ClipRRect(
+          child: 
+          //* Card 
+          ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: Image.network(
               movie.posterPath,
@@ -108,6 +114,29 @@ class _Slide extends StatelessWidget {
                 return FadeIn(child: child);
               },
             ),
+          ),
+        ),
+        const SizedBox(height: 5),
+        //* Bottom card title
+        SizedBox(
+          width: 150,
+          child: Text(
+            movie.title,
+            maxLines: 1,
+            style: textStyles.titleSmall,
+          ),
+        ),
+        //* Bottom card movie rating
+        SizedBox(
+          width: 150,
+          child: Row(
+            children: [
+              Icon(Icons.star_half_outlined, color: Colors.yellow.shade800),
+              const SizedBox(width: 3),
+              Text('${ movie.voteAverage }', style: textStyles.bodyMedium?.copyWith(color: Colors.yellow.shade800)),
+              const Spacer(),
+              Text(HumanFormats.number(movie.popularity), style: textStyles.bodySmall),
+            ]
           ),
         )
       ]),
