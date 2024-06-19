@@ -44,6 +44,7 @@ class _BodyViewState extends ConsumerState<_BodyView> {
           movies: nowPlayingMovies,
           labelTitle: 'En cines',
           labelSubtitle: 'Lunes 15',
+          loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
         )
       ],
     );

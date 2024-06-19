@@ -3,18 +3,47 @@ import "package:flutter/material.dart";
 import "package:flutter_cinema/config/helpers/human_formats.dart";
 import "package:flutter_cinema/domain/entities/movie.dart";
 
-class MoviesHorizontalListview extends StatelessWidget {
+class MoviesHorizontalListview extends StatefulWidget {
   final List<Movie> movies;
   final String? labelTitle;
   final String? labelSubtitle;
-  final VoidCallbackAction? loadNextPage;
+  final dynamic loadNextPage;
 
-  const MoviesHorizontalListview(
-      {super.key,
+  const MoviesHorizontalListview({
+      super.key,
       required this.movies,
       this.labelTitle,
       this.labelSubtitle,
-      this.loadNextPage});
+      this.loadNextPage
+  });
+
+  @override
+  State<MoviesHorizontalListview> createState() =>
+      _MoviesHorizontalListviewState();
+}
+
+class _MoviesHorizontalListviewState extends State<MoviesHorizontalListview> {
+  final scrollController = ScrollController();
+
+  //* Subscribe to scrollController changes:
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (widget.loadNextPage == null) return;
+
+      //* Llamamos la siguiente página al back, cada que se llega al fin del scroll
+      if ((scrollController.position.pixels + 200) >= scrollController.position.maxScrollExtent) {
+        widget.loadNextPage!();
+      }
+    });
+  }
+
+  //* Unsubscribe from scrollController changes:
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +52,17 @@ class MoviesHorizontalListview extends StatelessWidget {
       child: Column(
         children: [
           // Label del list view:
-          if (labelTitle != null || labelSubtitle != null)
-            _Label(title: labelTitle, subtitle: labelSubtitle),
+          if (widget.labelTitle != null || widget.labelSubtitle != null)
+            _Label(title: widget.labelTitle, subtitle: widget.labelSubtitle),
           // Contenedor del list view:
           Expanded(
             child: ListView.builder(
-              itemCount: movies.length,
+              controller: scrollController,
+              itemCount: widget.movies.length,
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                return _Slide(movie: movies[index]);
+                return _Slide(movie: widget.movies[index]);
               },
             )
           )
@@ -85,7 +115,6 @@ class _Slide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final textStyles = Theme.of(context).textTheme;
 
     return Container(
@@ -94,9 +123,9 @@ class _Slide extends StatelessWidget {
         //* Card container
         SizedBox(
           width: 150,
-          child: 
-          //* Card 
-          ClipRRect(
+          child:
+              //* Card
+              ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: Image.network(
               movie.posterPath,
@@ -129,15 +158,16 @@ class _Slide extends StatelessWidget {
         //* Bottom card movie rating
         SizedBox(
           width: 150,
-          child: Row(
-            children: [
-              Icon(Icons.star_half_outlined, color: Colors.yellow.shade800),
-              const SizedBox(width: 3),
-              Text('${ movie.voteAverage }', style: textStyles.bodyMedium?.copyWith(color: Colors.yellow.shade800)),
-              const Spacer(),
-              Text(HumanFormats.number(movie.popularity), style: textStyles.bodySmall),
-            ]
-          ),
+          child: Row(children: [
+            Icon(Icons.star_half_outlined, color: Colors.yellow.shade800),
+            const SizedBox(width: 3),
+            Text('${movie.voteAverage}',
+                style: textStyles.bodyMedium
+                    ?.copyWith(color: Colors.yellow.shade800)),
+            const Spacer(),
+            Text(HumanFormats.number(movie.popularity),
+                style: textStyles.bodySmall),
+          ]),
         )
       ]),
     );
