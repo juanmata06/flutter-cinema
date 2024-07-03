@@ -4,6 +4,7 @@ import 'package:flutter_cinema/config/constants/enviroment.dart';
 import 'package:flutter_cinema/domain/datasources/movies_datasources.dart';
 
 import 'package:flutter_cinema/infrastructure/mappers/movie_mapper.dart';
+import 'package:flutter_cinema/infrastructure/models/moviedb/movie_details.dart';
 import 'package:flutter_cinema/infrastructure/models/moviedb/moviedb_response.dart';
 import 'package:flutter_cinema/domain/entities/movie.dart';
 
@@ -65,5 +66,12 @@ class MovieDbDatasource extends MoviesDatasource {
     );
 
     return _jsonToMovies(response.data);
+  }
+  
+  @override
+  Future<Movie> getMovieById(String id) async {
+    final response = await dio.get('/movie/$id');
+    if(response.statusCode != 200) throw Exception('Error al obtener detalles de pelicula');
+    return MovieMapper.apiMovieDetailsToEntityMovie(MovieDetails.fromJson(response.data));
   }
 }
