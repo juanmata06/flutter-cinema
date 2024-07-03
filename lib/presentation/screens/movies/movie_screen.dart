@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cinema/domain/entities/movie.dart';
 import 'package:flutter_cinema/presentation/providers/movies/movie_info_provider.dart';
+import 'package:flutter_cinema/presentation/providers/providers_exports.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
@@ -22,6 +23,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   void initState() {
     super.initState();
     ref.read(movieDetailsProvider.notifier).loadMovie(widget.movieId);
+    ref.read(actorsByMovieProvider.notifier).loadActors(widget.movieId);
   }
 
   @override
@@ -187,8 +189,25 @@ class _MovieDetails extends StatelessWidget {
               ))
             ],
           ),
-        )
+        ),
+        const SizedBox(height: 10),
+        _ActorsByMovieSlider(movieId: movie.id.toString()),
+        const SizedBox(height: 1000),
       ],
     );
+  }
+}
+
+class _ActorsByMovieSlider extends ConsumerWidget {
+  final String movieId;
+  const _ActorsByMovieSlider({required this.movieId});
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final actorsByMovie = ref.watch(actorsByMovieProvider);
+    if(actorsByMovie[movieId] == null){
+      return const CircularProgressIndicator(strokeWidth: 2);
+    }
+    return Placeholder();
   }
 }
