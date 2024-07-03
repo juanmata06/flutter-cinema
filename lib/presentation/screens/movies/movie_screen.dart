@@ -40,7 +40,11 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
-          _CustomSliverAppBar(movie: movie)
+          _CustomSliverAppBar(movie: movie),
+          SliverList(delegate: SliverChildBuilderDelegate(
+            (context, index) =>_MovieDetails(movie: movie),
+            childCount: 1
+          ))
         ],
       ),
     );
@@ -112,6 +116,79 @@ class _CustomSliverAppBar extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _MovieDetails extends StatelessWidget {
+  final Movie movie;
+  const _MovieDetails({required this.movie});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final textStyles = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+         Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // //* Poster en pequeño
+              // ClipRRect(
+              //   borderRadius: BorderRadius.circular(20),
+              //   child: Image.network(
+              //     movie.posterPath,
+              //     width: size.width * 0.3,
+              //   ),
+              // ),
+              //* Descripción
+              SizedBox(
+                width: size.width * 0.9,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      movie.title, 
+                      style: textStyles.titleLarge
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      movie.overview, 
+                      style: textStyles.bodyMedium,
+                      textAlign: TextAlign.center
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )
+        ),
+        //* Generos de película
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            children: [...movie.genreIds.map((gender) => Container(
+                margin: const EdgeInsets.only(right: 10),
+                child: Chip(
+                  label: Text(
+                    gender, 
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                ),
+              ))
+            ],
+          ),
+        )
+      ],
     );
   }
 }
