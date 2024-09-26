@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
-import "package:flutter_cinema/presentation/providers/movies/movies_providers.dart";
+import "package:flutter_cinema/presentation/providers/providers_exports.dart";
+import "package:flutter_cinema/presentation/widgets/widgets.exports.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 class HomeScreen extends StatelessWidget {
@@ -10,38 +11,92 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: _HomeView(),
+      body: _BodyView(),
+      bottomNavigationBar: CustomBottomBar(),
     );
   }
 }
 
-class _HomeView extends ConsumerStatefulWidget {
-  const _HomeView();
+class _BodyView extends ConsumerStatefulWidget {
+  const _BodyView();
 
   @override
-  _HomeViewState createState() => _HomeViewState();
+  _BodyViewState createState() => _BodyViewState();
 }
 
-class _HomeViewState extends ConsumerState<_HomeView> {
+class _BodyViewState extends ConsumerState<_BodyView> {
   @override
   void initState() {
     super.initState();
-
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
+    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
+    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
-    
+    final slideShowMovies = ref.watch(moviesSlideShowProvider);
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final popularMovies = ref.watch(popularMoviesProvider);
+    final upcomingMoviesMovies = ref.watch(upcomingMoviesProvider);
+    final topRatedMoviesMovies = ref.watch(topRatedMoviesProvider);
 
-    return ListView.builder(
-        itemCount: nowPlayingMovies.length,
-        itemBuilder: ((context, index) {
-          final movie = nowPlayingMovies[index];
-          return ListTile(
-            title: Text(movie.title),
-          );
-        }));
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          floating: true,
+          flexibleSpace: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return FlexibleSpaceBar(
+                titlePadding: EdgeInsets.zero,
+                title: Container(
+                  alignment: Alignment.centerLeft,
+                  child: const CustomAppBar(),
+                ),
+              );
+            },
+          ),
+        ),
+        SliverList(delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return Column(
+              children: [
+                MoviesSlideShow(movies: slideShowMovies),
+                MoviesHorizontalListview(
+                  movies: nowPlayingMovies,
+                  labelTitle: 'En cines',
+                  labelSubtitle: 'Lunes 17',
+                  loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+                ),
+                const SizedBox(height: 25),
+                MoviesHorizontalListview(
+                  movies: popularMovies,
+                  labelTitle: 'Populares',
+                  labelSubtitle: 'Solo Tops',
+                  loadNextPage: () => ref.read(popularMoviesProvider.notifier).loadNextPage(),
+                ),
+                const SizedBox(height: 25),
+                MoviesHorizontalListview(
+                  movies: upcomingMoviesMovies,
+                  labelTitle: 'Próximamente',
+                  labelSubtitle: 'Julio 1',
+                  loadNextPage: () => ref.read(upcomingMoviesProvider.notifier).loadNextPage(),
+                ),
+                const SizedBox(height: 25),
+                MoviesHorizontalListview(
+                  movies: topRatedMoviesMovies,
+                  labelTitle: 'Mejor valoradas',
+                  labelSubtitle: 'IMDb',
+                  loadNextPage: () => ref.read(topRatedMoviesProvider.notifier).loadNextPage(),
+                ),
+                const SizedBox(height: 50),
+              ],
+            );
+          },
+          childCount: 1
+        ))
+      ]
+    );
   }
 }
