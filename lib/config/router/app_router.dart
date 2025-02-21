@@ -1,13 +1,20 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter_cinema/presentation/screens/movies/home_screen.dart';
+import '../../presentation/screens/screens_exports.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/', 
   routes: [
     GoRoute(
-      path: '/', 
+      path: '/',
       name: HomeScreen.name,
-      builder: (context, state) => const HomeScreen()
+      builder: (context, state) => const HomeScreen(),
+      routes: [
+        GoRoute(
+          path: 'movie/:id',
+          name: MovieScreen.name,
+          builder: (context, state) => MovieScreen(movieId: state.pathParameters['id'] ?? 'no-id'),
+        ),
+      ]
     )
   ]
 );

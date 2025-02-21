@@ -1,10 +1,3 @@
-
-/*
-  MovieMovieDB:
-  This class represents the base JSON model for our movie data, it reflects 
-  a general response structure from The Movie DB API.
-  The final model used in our application is in `movie.dart` file. 
-*/
 class MovieMovieDB {
     MovieMovieDB({
         required this.adult,

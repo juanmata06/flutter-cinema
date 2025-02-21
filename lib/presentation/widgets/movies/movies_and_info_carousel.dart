@@ -1,7 +1,6 @@
-import 'dart:ui';
-
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter_cinema/config/helpers/human_formats.dart';
 import 'package:flutter_cinema/domain/entities/movie.dart';
 
@@ -77,7 +76,7 @@ class _MoviesCarousel extends StatelessWidget {
     final textStyles = Theme.of(context).textTheme;
     
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -99,7 +98,10 @@ class _MoviesCarousel extends StatelessWidget {
                       ),
                     );
                   }
-                  return FadeIn(child: child);
+                  return GestureDetector(
+                    child: FadeIn(child: child),
+                    onTap: () => context.go('/movie/${movie.id}'),
+                  );
                 },
               ),
             ),
@@ -118,11 +120,11 @@ class _MoviesCarousel extends StatelessWidget {
           SizedBox(
             width: 150,
             child: Row(children: [
-              Icon(Icons.star_half_rounded, color: Colors.amber),
+              const Icon(Icons.star_half_rounded, color: Colors.amber),
               const SizedBox(height: 3),
               Text(movie.voteAverage.toStringAsFixed(1), style: textStyles.bodyMedium?.copyWith(color: Colors.yellow.shade800)),
               // const SizedBox(height: 3),
-              Spacer(),
+              const Spacer(),
               Text(HumanFormats.number(movie.popularity), style: textStyles.bodySmall),
             ]),
           ),

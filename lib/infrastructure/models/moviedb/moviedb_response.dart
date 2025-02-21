@@ -1,12 +1,4 @@
 import 'movie_moviedb.dart';
-
-/*
-  MovieDbResponse:
-  This class represents the response from The Movie Database (TMDb) API.
-  It holds the data returned by the API but is not the exact JSON model
-  used as the foundation for our movie model.
-  A more accurate model can be found in `movie_moviedb.dart` file.
-*/
 class MovieDbResponse {
     MovieDbResponse({
         required this.dates,
