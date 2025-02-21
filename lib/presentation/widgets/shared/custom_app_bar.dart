@@ -5,24 +5,33 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeColors = Theme.of(context).colorScheme;
-    final themeTitleStyle = Theme.of(context).textTheme.titleMedium;
-
+    final colors = Theme.of(context).colorScheme;
+    final titleStyle = Theme.of(context).textTheme.titleMedium;
     return SafeArea(
+      bottom: false,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: SizedBox(
-          width: double.infinity,
-          child: Row(
-            children: [
-              Icon(Icons.movie_outlined, color: themeColors.primary),
-              const SizedBox(width: 5),
-              Text('Flutter cinema', style: themeTitleStyle),
-              const Spacer(),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.search))
-            ],
-          ),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: SizedBox(
+        width: double.infinity,
+        child: Row(
+          children: [
+            Icon(
+              Icons.movie_outlined,
+              color: colors.primary,
+            ),
+            const SizedBox(width: 5),
+            Text('My movies', style: titleStyle),
+            const Spacer(),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.search,
+                color: colors.primary,
+              ),
+            ),
+          ],
         ),
+      ),
     ));
   }
 }
