@@ -7,7 +7,7 @@ import 'package:flutter_cinema/infrastructure/mappers/movie_mapper.dart';
 import 'package:flutter_cinema/infrastructure/models/moviedb/movie_details_moviedb.dart';
 import 'package:flutter_cinema/infrastructure/models/moviedb/moviedb_response.dart';
 
-class MoviesDbDatasource extends MoviesDataSource {
+class MovieMovieDbDatasource extends MoviesDataSource {
   final dio = Dio(
     BaseOptions(
       baseUrl: Enviroment.movieDbBaseUrl,
