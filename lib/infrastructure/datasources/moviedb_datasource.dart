@@ -13,7 +13,7 @@ class MoviesDbDatasource extends MoviesDataSource {
       baseUrl: Enviroment.movieDbBaseUrl,
       queryParameters: {
         'api_key': Enviroment.theMovieDbKey,
-        'languaje': Enviroment.movieDbApiLanguage
+        'language': Enviroment.movieDbApiLanguage
       }
     )
   );
