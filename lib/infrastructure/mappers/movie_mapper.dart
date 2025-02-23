@@ -7,7 +7,7 @@ class MovieMapper {
     adult: movieDB.adult,
     backdropPath: movieDB.backdropPath != '' ? 
       'https://image.tmdb.org/t/p/w500${movieDB.backdropPath}' : 
-      'https://media.licdn.com/dms/image/v2/D4D03AQHJGJTKjiBGeQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1703755861417?e=1744243200&v=beta&t=cWq-TsSYli3Uu-h6XeOjyOtLlT36wue4Oj4A-dduWyU',
+      'https://advancescreenings.com/img/timthumb.php?src=/img/posters/d/drunk_wedding.jpg&h=282&w=190&q=100',
     genreIds: movieDB.genreIds.map((genre) => genre.toString()).toList(),
     id: movieDB.id,
     originalLanguage: movieDB.originalLanguage,
@@ -16,8 +16,8 @@ class MovieMapper {
     popularity: movieDB.popularity,
     posterPath: movieDB.posterPath != '' ? 
       'https://image.tmdb.org/t/p/w500${movieDB.posterPath}' : 
-      'no-poster', 
-    releaseDate: movieDB.releaseDate,
+      'https://advancescreenings.com/img/timthumb.php?src=/img/posters/d/drunk_wedding.jpg&h=282&w=190&q=100', 
+    releaseDate: movieDB.releaseDate != null ? movieDB.releaseDate! : DateTime.now(),
     title: movieDB.title,
     video: movieDB.video,
     voteAverage: movieDB.voteAverage,
@@ -28,7 +28,7 @@ class MovieMapper {
     adult: apiMovie.adult,
     backdropPath: (apiMovie.backdropPath != '') ? 
       'https://image.tmdb.org/t/p/w500${apiMovie.backdropPath}' : 
-      'https://www.hotelsancarlosacapulco.com/image-not-available.png',
+      'https://advancescreenings.com/img/timthumb.php?src=/img/posters/d/drunk_wedding.jpg&h=282&w=190&q=100',
     genreIds: apiMovie.genres.map((e) => e.name).toList(),
     id: apiMovie.id,
     originalLanguage: apiMovie.originalLanguage,
@@ -37,7 +37,7 @@ class MovieMapper {
     popularity: apiMovie.popularity,
     posterPath: (apiMovie.posterPath != '') ? 
       'https://image.tmdb.org/t/p/w500${apiMovie.posterPath}' : 
-      'https://www.hotelsancarlosacapulco.com/image-not-available.png',
+      'https://advancescreenings.com/img/timthumb.php?src=/img/posters/d/drunk_wedding.jpg&h=282&w=190&q=100',
     releaseDate: apiMovie.releaseDate,
     title: apiMovie.title,
     video: apiMovie.video,

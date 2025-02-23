@@ -228,15 +228,15 @@ class _ActorsByMovie extends ConsumerWidget {
         itemCount: actors.length,
         itemBuilder: (context, index) {
           final actor = actors[index];
-          return Container(
-            padding: const EdgeInsets.all(8.0),
-            width: 135,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Actor image
-                FadeInRight(
-                  child: ClipRRect(
+          return FadeInRight(
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              width: 135,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //* Actor image
+                  ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
                       actor.profilePath,
@@ -245,19 +245,20 @@ class _ActorsByMovie extends ConsumerWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                ),
-                // Actor name
-                const SizedBox(height: 5),
-                Text(actor.name, maxLines: 2),
-                Text(
-                  actor.character ?? '' ,
-                  maxLines: 2,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold, 
-                    overflow: TextOverflow.ellipsis
+                  //* Actor name
+                  const SizedBox(height: 5),
+                  Text(actor.name, maxLines: 2),
+                  //* Actor character
+                  Text(
+                    actor.character ?? '' ,
+                    maxLines: 2,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold, 
+                      overflow: TextOverflow.ellipsis
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
