@@ -8,21 +8,23 @@ typedef SearchMoviesCallBack = Future<List<Movie>> Function(String query);
 
 class SearchMoviesDelegate extends SearchDelegate<Movie?> {
   final SearchMoviesCallBack callBack;
+  final List<Movie> initialMovies;
   StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
   Timer? _debounceTimer;
 
   SearchMoviesDelegate({
-    required this.callBack
+    required this.callBack,
+    required this.initialMovies,
   });
 
   void _onQueryChanged(String query){
     if( _debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
 
     _debounceTimer = Timer(const Duration(milliseconds: 500), () async{
-      if(query.isEmpty){
-        debounceMovies.add([]);
-        return;
-      }
+      // if(query.isEmpty){
+      //   debounceMovies.add([]);
+      //   return;
+      // }
       debounceMovies.add(await callBack(query));
     });
   }
@@ -69,6 +71,7 @@ class SearchMoviesDelegate extends SearchDelegate<Movie?> {
 
     return StreamBuilder(
       // future: callBack(query), 
+      initialData: initialMovies,
       stream: debounceMovies.stream,
       builder: (context, snapshot){
         final movies = snapshot.data ?? [];
