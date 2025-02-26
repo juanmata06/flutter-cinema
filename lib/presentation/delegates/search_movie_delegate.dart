@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -7,11 +8,32 @@ typedef SearchMoviesCallBack = Future<List<Movie>> Function(String query);
 
 class SearchMoviesDelegate extends SearchDelegate<Movie?> {
   final SearchMoviesCallBack callBack;
+  StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
+  Timer? _debounceTimer;
 
-  SearchMoviesDelegate({required this.callBack});
+  SearchMoviesDelegate({
+    required this.callBack
+  });
+
+  void _onQueryChanged(String query){
+    if( _debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
+
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () async{
+      if(query.isEmpty){
+        debounceMovies.add([]);
+        return;
+      }
+      debounceMovies.add(await callBack(query));
+    });
+  }
+
+  void _clearStreams(){
+    debounceMovies.close();
+  }
 
   @override
-  String get searchFieldLabel => 'Search movies';
+  String get searchFieldLabel => 
+  'Search movies';
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -28,8 +50,12 @@ class SearchMoviesDelegate extends SearchDelegate<Movie?> {
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
-        onPressed: () => close(context, null),
-        icon: const Icon(Icons.arrow_back_ios));
+      onPressed: () {
+        _clearStreams();
+        close(context, null);
+      },
+      icon: const Icon(Icons.arrow_back_ios)
+    );
   }
 
   @override
@@ -39,23 +65,27 @@ class SearchMoviesDelegate extends SearchDelegate<Movie?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder(
-      future: callBack(query), 
+    _onQueryChanged(query);
+
+    return StreamBuilder(
+      // future: callBack(query), 
+      stream: debounceMovies.stream,
       builder: (context, snapshot){
         final movies = snapshot.data ?? [];
         return ListView.builder(
           itemCount: movies.length,
           itemBuilder: (context, index) => _MovieItem(
             movie: movies[index],
-            onMovieSelected: close,
+            onMovieSelected: (context, movie) {
+              _clearStreams();
+              close(context, movie);
+            },
           ),
         );
       }
     );
   }
 }
-
-
 
 class _MovieItem extends StatelessWidget {
   final Movie movie;
