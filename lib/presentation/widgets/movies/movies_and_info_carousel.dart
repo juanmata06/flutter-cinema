@@ -100,7 +100,7 @@ class _MoviesCarousel extends StatelessWidget {
                   }
                   return GestureDetector(
                     child: FadeIn(child: child),
-                    onTap: () => context.go('/movie/${movie.id}'),
+                    onTap: () => context.go('/home/0/movie/${movie.id}'),
                   );
                 },
               ),
