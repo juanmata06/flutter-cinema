@@ -11,3 +11,6 @@ export 'actors/actors_by_movie_provider.dart';
 
 //* Search:
 export 'search/search_movies_provider.dart';
+
+//* Local bbdd:
+export 'local_storage/local_storage_provider.dart';
